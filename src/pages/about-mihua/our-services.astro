@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import { services, specialties } from '../../data/site.js';
+import { url } from '../../lib/url.js';
+---
+<Base title="診療項目" description="米花動物醫院提供犬貓一般家醫、內科、進階內科、外科診療，以及心臟、腎臟泌尿、肝膽腸胃、皮膚、內分泌、貓科、神經、齒科等分科醫療。">
+  <PageHero title="診療項目" subtitle="從小到老，我們都不缺席" crumbs={[{ label: '診療項目' }]} image="images/cat-white.webp" />
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p>在米花，我們提供毛小孩全方位的醫療服務，從幼年的預防注射及飼養諮詢，青年的常規絕育手術以及年度健康檢查，到老年的各種內外科疑難雜症。</p>
+      </div>
+      <div class="service-grid">
+        {services.map((s) => (
+          <div class="service">
+            <h3>{s.title}</h3>
+            <ul>{s.items.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">SPECIALTIES</span><h2>分科診療</h2></div>
+      <div class="spec-grid">
+        {specialties.map((s) => (
+          <div class="spec">
+            <h3>{s.title}</h3>
+            <ul class="chips">{s.items.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <p style="text-align:center;margin-top:40px">
+        <a class="btn btn-navy" href={url('about-mihua/our-team/')}>看各醫師專長</a>
+        <a class="btn btn-outline" style="margin-left:8px" href={url('health-checkup/')}>健檢套組</a>
+      </p>
+    </div>
+  </section>
+  <BookingCta />
+</Base>

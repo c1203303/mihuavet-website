@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import BookingCta from '../components/BookingCta.astro';
+import { healthPackages, clinic } from '../data/site.js';
+import { url } from '../lib/url.js';
+---
+<Base title="健檢套組" description="米花動物醫院犬貓健康檢查套組與價格：成犬、老犬基礎、老犬高階、成貓、老貓基礎、老貓高階，以及健檢年齡建議與空腹須知。">
+  <PageHero title="健檢套組" subtitle="「一切看起來都好」的時候，就是健檢的最佳時機" crumbs={[{ label: '健檢套組' }]} image="images/cat-sleep.webp" />
+  <section class="section">
+    <div class="container prose">
+      <div class="notice-box">
+        <strong>注意事項：</strong>
+        <ul>
+          <li>健康檢查請事先來電<a href={url('contact/')}>預約</a>，並保留兩小時的檢查時間</li>
+          <li>若您的寵物就醫時容易緊張，請於來電時提前告知，請醫師評估是否提前開立安神藥物</li>
+          <li>建議空腹 8-12 小時，以獲得最佳檢查結果</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="packages">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">PACKAGES</span><h2>米花動物醫院健檢套組</h2></div>
+      <div class="species-tabs" role="tablist">
+        {healthPackages.map((p, i) => <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-species={i}>{p.species}</button>)}
+      </div>
+      {healthPackages.map((p, i) => (
+        <div class="plans" data-plans={i} hidden={i !== 0}>
+          {p.plans.map((plan) => (
+            <div class="plan">
+              <h3>{plan.name}</h3>
+              {plan.base && <p class="plan-base">{plan.base} ＋</p>}
+              <ul>{plan.items.map((it) => <li>{it}</li>)}</ul>
+              {plan.note && <p class="plan-note">（{plan.note}）</p>}
+              <p class="plan-price"><small>NT$</small>{plan.price.toLocaleString('en-US')}</p>
+            </div>
+          ))}
+        </div>
+      ))}
+      <p class="muted" style="text-align:center;margin-top:24px">就診時獸醫師會再根據毛孩病史及理學檢查結果與您討論及調整最終檢查項目。<br />本院為預約制，約診請於營業時間來電 {clinic.phone}、或填寫<a href={clinic.bookingForm} target="_blank" rel="noopener">預約需求表單</a>。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>為什麼要健檢</h2>
+      <p>所謂的「健康檢查」，其實是動物「看起來都還好」的時候，就先來確認內在有沒有什麼潛藏的問題。很多慢性病的發展其實是悄悄來的，等到真的出現症狀時，往往已經不是「早期」了。舉例來說，慢性腎病、心臟病甚至某些癌症，在初期可能完全沒有異狀，但若能透過定期檢查提早發現，我們就有機會更早介入、延長良好生活品質，甚至避免急性惡化或重大開銷。</p>
+      <p>所以，「健檢」並不是等到覺得牠怪怪的再來做，而是<span class="highlight">「一切看起來都好」的時候就該做</span>，這才是健檢真正的意義。</p>
+
+      <h2>幾歲要開始健檢</h2>
+      <p>可以分為幾個時期，各個時期檢查的目的和內容都稍有不同。30公斤以上的大型狗衰老速度較快，七歲以上就可能步入老年了喔！</p>
+      <ul class="stage-list">
+        <li><b>幼年</b>剛開始飼養的時候務必要做一次基礎檢查，可以和打疫苗一起。這個時候的目的是要確定有沒有明顯的先天性疾病，以及在最關鍵的生長期有沒有順利健康地長大，並且和醫師確認飲食內容、生活環境有沒有什麼不足之處。</li>
+        <li><b>絕育前</b>大都會在6-12月齡左右絕育，絕育前務必要做基礎血檢。若飼養的品種有先天性疾病的風險，例如心臟病、髖關節發育不良、多囊腎等等，可以在這個時候一起檢查。</li>
+        <li><b>成年</b>大約是1-7歲，這段時期通常是動物最健康的時期，但還是希望每年至少一次的基礎血液檢查，如果費用許可，也可以一兩年做一次影像檢查。這時的目的在於建立基礎的健康檔案，若未來發生慢性病，這些資料都很有幫助。</li>
+        <li><b>中年</b>大約7-10歲，開始有機會發生慢性疾病，這時每年一次的基礎血檢就是基本配備，可以考慮增加一些慢性疾病的篩檢（例如甲狀腺等），也要開始做影像檢查。</li>
+        <li><b>老年</b>10歲以上的動物可能是70幾歲的老人家了，健檢內容就建議每年要包括完整的血檢、慢性病篩檢和影像檢查。若12-15歲以上，甚至建議縮短至半年一次的血檢。</li>
+      </ul>
+
+      <h2>健檢有哪些項目</h2>
+      <ul class="check-list">
+        <li><strong>理學檢查</strong>：測量體重、觀察體態，利用視診、觸診、聽診等無須儀器的檢查，來評估動物的基本狀況，是健檢中最基礎也最重要的一環。</li>
+        <li><strong>血液檢查</strong>：檢測肝腎功能、血球狀況、蛋白、血糖、電解質等指數，幫助判斷身體是否有嚴重問題，是健檢的主力。</li>
+        <li><strong>尿液檢查</strong>：有助於發現早期腎臟疾病以及下泌尿道異常。</li>
+        <li><strong>影像檢查</strong>：包含X光與超音波，可以檢視心臟、肝臟、腎臟、膀胱、腸胃等身體內部構造，有助於發現器官大小、型態異常，也可能可以看到團塊、結石等異常構造。</li>
+        <li><strong>其他檢查</strong>：視動物狀況可能會另外安排血壓、眼壓、各種快篩等其他檢查。</li>
+      </ul>
+      <p style="margin-top:1em">更多資訊請參考：<a href="https://blog.mihuavet.tw/tag/%e7%8d%b8%e9%86%ab%e5%b8%ab%e6%95%99%e4%bd%a0%e7%9c%8b%e6%aa%a2%e9%a9%97%e5%a0%b1%e5%91%8a/" target="_blank" rel="noopener">獸醫師教你看檢驗報告</a></p>
+
+      <h2>健檢要空腹嗎</h2>
+      <p><span class="highlight">盡量空腹8-12小時，可以喝水</span>。因為進食可能造成以下影響：</p>
+      <ul>
+        <li>對檢驗數值的直接影響：例如血糖、血脂、尿素氮濃度等數值，都可能會因為剛吃飯而上升。</li>
+        <li>對檢驗數值的間接影響：若剛吃飽飯血液中有過多脂肪而形成脂血症時，可能會影響許多檢測的數值（取決於檢測方法），因此檢驗室都會盡量希望不要收到脂血症的檢體。</li>
+        <li>物理性的影響：吃飽飯後胃會漲大，如果健檢預計要做一些影像檢查，就有可能會被胃中的食物擋住而影響檢查品質。</li>
+      </ul>
+      <p>假如沒有空腹，但數值都沒有超過正常範圍或不影響影像，可能都還可以接受，但假如已經超過正常範圍，那可能需要空腹時再追蹤一次喔。</p>
+    </div>
+  </section>
+  <BookingCta />
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-species]');
+  buttons.forEach((btn) => btn.addEventListener('click', () => {
+    buttons.forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+    document.querySelectorAll<HTMLElement>('[data-plans]').forEach((el) => { el.hidden = el.dataset.plans !== btn.dataset.species; });
+  }));
+</script>

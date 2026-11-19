@@ -1,0 +1,54 @@
+---
+import { doctors, departments } from '../data/site.js';
+import { fallbackSchedule } from '../data/schedule-fallback.js';
+import { renderScheduleTable } from '../lib/schedule.js';
+
+const doctorDept = Object.fromEntries(doctors.map((d) => [d.name, d.dept]));
+const initial = renderScheduleTable(fallbackSchedule, doctorDept, departments);
+---
+<div class="schedule" data-schedule data-dept={JSON.stringify(doctorDept)} data-colors={JSON.stringify(departments)} data-fallback={JSON.stringify(fallbackSchedule)}>
+  <div class="sch-tabs" hidden></div>
+  <div class="sch-body" set:html={initial} />
+  <p class="sch-foot">每月 20 日公布次月班表，請參考後<a href="tel:+88636581042">來電預約</a>。</p>
+</div>
+
+<script>
+  import { getPublicDoc } from '../lib/firestore.js';
+  import { renderScheduleTable, normalizeSchedule, taipeiMonth, monthLabel } from '../lib/schedule.js';
+
+  async function load(el: HTMLElement) {
+    const dept = JSON.parse(el.dataset.dept || '{}');
+    const colors = JSON.parse(el.dataset.colors || '{}');
+    const fallback = JSON.parse(el.dataset.fallback || '{}');
+    const body = el.querySelector('.sch-body') as HTMLElement;
+    const tabs = el.querySelector('.sch-tabs') as HTMLElement;
+    const months = [taipeiMonth(0), taipeiMonth(1)];
+    let found: any[] = [];
+    try {
+      const docs = await Promise.all(months.map((m) => getPublicDoc(`websiteSchedules/${m}`).catch(() => undefined)));
+      if (docs.every((d) => d === undefined)) throw new Error('offline');
+      found = docs
+        .map((d, i) => normalizeSchedule(d, months[i]))
+        .filter((s) => s && s.published && s.slots.length);
+    } catch {
+      return;
+    }
+    if (!found.length) {
+      if (fallback.month < months[0]) {
+        body.innerHTML = `<div class="sch-empty"><h3 class="sch-title">${monthLabel(months[0])}醫師班表</h3><p>本月班表整理中，請來電詢問各時段看診醫師。</p></div>`;
+      }
+      return;
+    }
+    const show = (i: number) => {
+      body.innerHTML = renderScheduleTable(found[i], dept, colors);
+      tabs.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-selected', String(i === j)));
+    };
+    if (found.length > 1) {
+      tabs.innerHTML = found.map((s) => `<button type="button" role="tab">${monthLabel(s.month)}</button>`).join('');
+      tabs.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => show(i)));
+      tabs.hidden = false;
+    }
+    show(0);
+  }
+  document.querySelectorAll<HTMLElement>('[data-schedule]').forEach(load);
+</script>

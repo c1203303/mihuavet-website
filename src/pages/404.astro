@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url.js';
+---
+<Base title="找不到頁面">
+  <section class="section">
+    <div class="container" style="text-align:center">
+      <img src={url('images/popcorn.png')} alt="" width="120" height="120" style="margin:0 auto 20px" />
+      <h1>找不到這個頁面</h1>
+      <p class="muted">網址可能已經變更，請從首頁重新瀏覽。</p>
+      <a class="btn btn-primary" href={url('')}>回到首頁</a>
+    </div>
+  </section>
+</Base>

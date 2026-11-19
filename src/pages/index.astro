@@ -1,0 +1,124 @@
+---
+import Base from '../layouts/Base.astro';
+import Announcement from '../components/Announcement.astro';
+import Schedule from '../components/Schedule.astro';
+import BookingCta from '../components/BookingCta.astro';
+import { clinic, services } from '../data/site.js';
+import { url } from '../lib/url.js';
+---
+<Base>
+  <Announcement />
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">竹北犬貓專業醫療</span>
+        <h1>專業・溫暖<br />無微不至</h1>
+        <p class="hero-lead">臺大、中興教學醫院訓練的獸醫師團隊，<br />提供毛小孩教學醫院等級的高品質醫療。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={url('contact/')}>立即預約</a>
+          <a class="btn btn-outline" href="#schedule">查看本月班表</a>
+        </div>
+        <ul class="hero-badges">
+          <li>完全預約制</li>
+          <li>獨立貓候診區與貓診間</li>
+          <li>犬貓分科醫療</li>
+        </ul>
+      </div>
+      <div class="hero-photo">
+        <img src={url('images/hero-team.webp')} alt="米花動物醫院醫療團隊" width="1800" height="1200" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cards-3">
+        <a class="card" href={url('about-mihua/')}>
+          <div class="card-img"><img src={url('images/cats.webp')} alt="兩隻貓咪" loading="lazy" width="1000" height="779" /></div>
+          <div class="card-body">
+            <h3>關於米花</h3>
+            <p>毛孩腳掌上的爆米花香，只有最信任的夥伴才聞得到。</p>
+            <span class="card-link">認識米花 →</span>
+          </div>
+        </a>
+        <a class="card" href={url('about-mihua/environment/')}>
+          <div class="card-img"><img src={url('images/environment/1.webp')} alt="米花接待空間" loading="lazy" width="1200" height="899" /></div>
+          <div class="card-body">
+            <h3>乾淨・明亮・貓咪友善</h3>
+            <p>優化的醫療環境，減輕您與毛孩的壓力。</p>
+            <span class="card-link">參觀環境 →</span>
+          </div>
+        </a>
+        <a class="card" href={url('about-mihua/our-team/')}>
+          <div class="card-img"><img src={url('images/team/hsiehmingjuei.webp')} alt="米花獸醫師" loading="lazy" width="720" height="1280" style="object-position: 50% 20%" /></div>
+          <div class="card-body">
+            <h3>專業內外科團隊</h3>
+            <p>臺大專業團隊，提供教學醫院等級的高品質醫療。</p>
+            <span class="card-link">米花團隊 →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="schedule">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">SCHEDULE</span>
+        <h2>本月班表</h2>
+        <p>本院為完全預約制，請參考班表後來電 {clinic.phone} 預約。</p>
+      </div>
+      <Schedule />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">SERVICES</span>
+        <h2>從小到老，我們都不缺席</h2>
+        <p>我們提供狗狗和貓咪全方位的醫療服務，從幼年的預防注射及飼養諮詢，青年的常規絕育手術以及年度健康檢查，到老年的各種內外科疑難雜症。</p>
+      </div>
+      <div class="service-grid">
+        {services.map((s) => (
+          <div class="service">
+            <h3>{s.title}</h3>
+            <ul>{s.items.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <p style="text-align:center;margin-top:36px">
+        <a class="btn btn-navy" href={url('about-mihua/our-services/')}>完整診療項目</a>
+        <a class="btn btn-outline" style="margin-left:8px" href={url('health-checkup/')}>健檢套組</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">ABOUT</span>
+        <h2>信任，是最深刻的連結</h2>
+        <p>唯有讓毛孩們信任我們，我們才有機會了解牠們的疾病。唯有讓毛家長信任我們，我們才有機會治療牠們的疾病。</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>專業犬貓分科醫療</h3>
+          <p>米花的獸醫師們受過臺大教學醫院的嚴謹訓練，在各自的專業領域中皆有豐富的經驗，也積極汲取新知，極力提升毛小孩的醫療水準。</p>
+          <p class="quote">在造物主面前，我們謙卑，但昂首闊步。</p>
+        </div>
+        <div class="feature">
+          <h3>以「毛」為尊的醫院設計</h3>
+          <p>獨立的貓候診區以及貓診間，阻隔讓貓咪緊張的氣味與聲響；住院區無柵狀底盤；全預約的環境讓我們能從容不迫地完成每一項該作的事。</p>
+        </div>
+        <div class="feature">
+          <h3>推倒知識的高牆</h3>
+          <p>我們創立了<a href={clinic.blog} target="_blank" rel="noopener">米花犬喵物語</a>，不定期新增疾病介紹和照顧方式的衛教文章，讓毛家長清楚理解毛小孩發生了什麼事。</p>
+          <p class="quote">獸醫師的社會責任，我們責無旁貸。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookingCta />
+</Base>
