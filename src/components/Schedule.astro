@@ -33,6 +33,7 @@ const initial = renderScheduleTable(fallbackSchedule, doctorDept, departments);
     } catch {
       return;
     }
+    if (found[0]?.month !== months[0] && fallback.month === months[0]) found.unshift(fallback);
     if (!found.length) {
       if (fallback.month < months[0]) {
         body.innerHTML = `<div class="sch-empty"><h3 class="sch-title">${monthLabel(months[0])}醫師班表</h3><p>本月班表整理中，請來電詢問各時段看診醫師。</p></div>`;
