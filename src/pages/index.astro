@@ -144,12 +144,13 @@ const slides = [
     };
     const stop = () => window.clearInterval(timer);
     const start = () => { stop(); if (!reduce) timer = window.setInterval(() => show(index + 1), 6000); };
-    root.querySelector('.prev')?.addEventListener('click', () => { show(index - 1); start(); });
-    root.querySelector('.next')?.addEventListener('click', () => { show(index + 1); start(); });
-    dots.forEach((d, i) => d.addEventListener('click', () => { show(i); start(); }));
+    root.querySelector('.prev')?.addEventListener('click', () => show(index - 1));
+    root.querySelector('.next')?.addEventListener('click', () => show(index + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
     root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
+    root.addEventListener('mouseleave', () => { if (!root.contains(document.activeElement)) start(); });
     root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget as Node)) start(); });
     let x0: number | null = null;
     root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
     root.addEventListener('touchend', (e) => {
