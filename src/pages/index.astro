@@ -150,7 +150,7 @@ const slides = [
     root.addEventListener('mouseenter', stop);
     root.addEventListener('mouseleave', () => { if (!root.contains(document.activeElement)) start(); });
     root.addEventListener('focusin', stop);
-    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget as Node)) start(); });
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget as Node) && !root.matches(':hover')) start(); });
     let x0: number | null = null;
     root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
     root.addEventListener('touchend', (e) => {
