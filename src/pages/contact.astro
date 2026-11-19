@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Announcement from '../components/Announcement.astro';
+import Schedule from '../components/Schedule.astro';
+import { clinic } from '../data/site.js';
+---
+<Base title="我想預約" description="米花動物醫院為完全預約制，請於營業時間來電 (03) 658-1042 或填寫預約需求表單。查看當月醫師班表、預約規定與就診前須知。">
+  <PageHero title="我想預約" subtitle="本院為「完全預約制」，恕不開放現場候診" crumbs={[{ label: '我想預約' }]} />
+  <Announcement />
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="contact-card">
+        <h2>預約方式</h2>
+        <p>為提供每位來院的毛小孩與家長最好的醫療品質，本院為「完全預約制」，恕不開放現場候診，請務必提前預約，謝謝！</p>
+        <p><a class="big-phone" href={`tel:${clinic.tel}`}>☎ {clinic.phone}</a></p>
+        <p><a class="btn btn-primary" href={clinic.bookingForm} target="_blank" rel="noopener">填寫預約需求表單</a></p>
+        <p class="muted">填寫表單後，本院將於兩個工作天內協助您完成預約。目前<strong>不開放線上約診/諮詢</strong>喔！</p>
+      </div>
+      <div class="contact-card">
+        <h2>預約相關規定</h2>
+        <ol>
+          <li>請於營業時間來電 {clinic.phone} 預約，或填寫預約需求表單。</li>
+          <li>本院會依您的需求為您安排合適的獸醫師看診，如有指定醫師看診請事先告知。</li>
+          <li>門診預約取消或改時間務必於約診時間至少<span class="highlight">『5小時前』</span>來電告知，否則視為預約未到。</li>
+          <li>請務必於預約時間準時到診，若無故預約遲到將視現場狀況決定是否照常看診，<span class="highlight">遲到超過30分鐘視為預約未到</span>。</li>
+          <li>預約未到累積達一定次數將影響未來預約順位。</li>
+        </ol>
+      </div>
+    </div>
+    <div class="container" style="margin-top:28px">
+      <div class="notice-box">
+        <h2 style="font-size:1.2rem">就診前須知</h2>
+        <p>由於毛小孩在醫院時可能會因為緊張、興奮而表現出無法預期的行為（如逃脫或攻擊），為了保護院內毛小孩的安全，<span class="highlight">來院的狗狗請務必上好牽繩，貓咪請務必放置於封閉的外出籠內</span>。</p>
+        <p style="margin:0">如您的毛小孩就診時容易緊張害怕，為了避免影響檢查效率及結果，<strong>建議來電詢問是否需事先服用安神藥物</strong>。</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-alt" id="schedule">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">SCHEDULE</span><h2>當月班表及營業時間</h2></div>
+      <Schedule />
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">LOCATION</span><h2>交通資訊</h2></div>
+      <div class="map"><iframe src={clinic.mapEmbed} title="米花動物醫院地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      <p style="text-align:center;margin-top:16px"><a href={clinic.mapLink} target="_blank" rel="noopener">在 Google 地圖開啟 ↗</a></p>
+    </div>
+  </section>
+</Base>

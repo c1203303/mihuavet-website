@@ -1,0 +1,37 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import BookingCta from '../../../components/BookingCta.astro';
+import { doctors, departments } from '../../../data/site.js';
+import { url } from '../../../lib/url.js';
+
+export function getStaticPaths() {
+  return doctors.map((doctor) => ({ params: { slug: doctor.slug }, props: { doctor } }));
+}
+const { doctor: d } = Astro.props;
+---
+<Base title={`${d.name} 獸醫師`} description={`米花動物醫院 ${d.name} 獸醫師（${d.focus}）的主治內容與學經歷。`}>
+  <PageHero title={`${d.name} 獸醫師`} subtitle={d.enName} crumbs={[{ label: '米花團隊', href: 'about-mihua/our-team/' }, { label: `${d.name} 獸醫師` }]} />
+  <section class="section">
+    <div class="container doctor-detail">
+      <div class="doctor-photo">
+        {d.photo
+          ? <img src={url(d.photo)} alt={`${d.name} 獸醫師`} width="720" height="1280" />
+          : <img class="placeholder" src={url('images/popcorn.png')} alt="" width="256" height="256" />}
+      </div>
+      <div>
+        <p><span class="dept-tag" style={`background:${departments[d.dept]}`}>{d.dept}</span><span class="doctor-focus">{d.focus}</span></p>
+        <h2>主治內容</h2>
+        <ul class="check-list">{d.treats.map((t) => <li>{t}</li>)}</ul>
+        <h2>學經歷</h2>
+        <ul class="check-list">{d.career.map((t) => <li>{t}</li>)}</ul>
+        <div class="doctor-nav">
+          <a class="btn btn-primary" href={url('contact/')}>預約{d.name}醫師</a>
+          <a class="btn btn-outline" href={url('contact/#schedule')}>看門診班表</a>
+          <a class="btn btn-outline" href={url('about-mihua/our-team/')}>其他醫師</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <BookingCta />
+</Base>

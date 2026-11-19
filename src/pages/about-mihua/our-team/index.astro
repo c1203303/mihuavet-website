@@ -1,0 +1,35 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import BookingCta from '../../../components/BookingCta.astro';
+import { doctors, departments, clinic } from '../../../data/site.js';
+import { url } from '../../../lib/url.js';
+---
+<Base title="米花團隊" description="米花動物醫院的獸醫師團隊均受過臺大或中興獸醫教學醫院的嚴格專業訓練，專長涵蓋腎臟、肝膽腸胃、貓科、皮膚、內分泌、心臟、外科、齒科與神經科。">
+  <PageHero title="米花醫療團隊" subtitle="受過臺大或中興獸醫教學醫院的嚴格專業訓練" crumbs={[{ label: '米花團隊' }]} image="images/hero-team.webp" />
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p>米花動物醫院的獸醫師們均受過臺大或中興獸醫教學醫院的嚴格專業訓練，於各自的領域中精益求精。然而除了精進醫術及技術之外，我們也相信所有的醫療若沒有毛家長的充分參與都會事倍功半，因此創立衛教網站「<a href={clinic.blog} target="_blank" rel="noopener">米花犬喵物語</a>」提供正確的疾病知識，讓毛家長們在更了解自己寶貝的疾病之後，更能夠與獸醫師們配合，讓毛小孩的疾病獲得更好的控制。</p>
+      </div>
+      <div class="team-grid">
+        {doctors.map((d) => (
+          <a class="doctor-card" href={url(`about-mihua/our-team/${d.slug}/`)}>
+            <div class="doctor-photo">
+              {d.photo
+                ? <img src={url(d.photo)} alt={`${d.name} 獸醫師`} width="720" height="1280" loading="lazy" />
+                : <img class="placeholder" src={url('images/popcorn.png')} alt="" width="256" height="256" loading="lazy" />}
+            </div>
+            <div class="doctor-info">
+              <h3>{d.name}<small>獸醫師</small></h3>
+              <p class="doctor-en">{d.enName}</p>
+              <span class="dept-tag" style={`background:${departments[d.dept]}`}>{d.dept}</span>
+              <span class="doctor-focus">{d.focus}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <BookingCta />
+</Base>

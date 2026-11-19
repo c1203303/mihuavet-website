@@ -1,0 +1,123 @@
+---
+import '../styles/global.css';
+import { clinic, nav } from '../data/site.js';
+import { url } from '../lib/url.js';
+
+const { title, description = '米花動物醫院位於新竹竹北，由臺大、中興獸醫教學醫院訓練的獸醫師團隊提供犬貓內外科、家醫、健康檢查等專業醫療，全預約制、貓咪友善。' } = Astro.props;
+const fullTitle = title ? `${title}｜${clinic.name}` : `${clinic.name}｜${clinic.tagline}`;
+const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
+const hrefs = nav.flatMap((item) => [item, ...(item.children || [])].filter((x) => !x.external).map((x) => ({ top: item, href: `/${x.href}` })));
+const match = hrefs
+  .filter((h) => (h.href === '/' ? current === '/' : current.startsWith(h.href)))
+  .sort((a, b) => b.href.length - a.href.length)[0];
+const isActive = (item) => match?.top === item;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={url('favicon.png')} type="image/png" />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('images/hero-team.webp'), Astro.site)} />
+    <meta property="og:locale" content="zh_TW" />
+    <meta name="theme-color" content="#0f4c6b" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'VeterinaryCare',
+      name: clinic.name,
+      url: 'https://mihuavet.tw/',
+      telephone: clinic.tel,
+      image: new URL(url('images/hero-team.webp'), Astro.site).href,
+      sameAs: [clinic.facebook, clinic.instagram, clinic.blog],
+    })} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要內容</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={url('')} aria-label="米花動物醫院 首頁">
+          <img src={url('images/logo.png')} alt="米花動物醫院" width="572" height="112" />
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="開啟選單">
+          <span></span><span></span><span></span>
+        </button>
+        <nav id="site-nav" class="site-nav" aria-label="主選單">
+          <ul>
+            {nav.map((item) => (
+              <li class={item.children ? 'has-sub' : ''}>
+                <a
+                  href={url(item.href)}
+                  class={isActive(item) ? 'active' : ''}
+                  {...(item.external ? { target: '_blank', rel: 'noopener' } : {})}
+                >{item.label}{item.external && <span class="ext" aria-hidden="true">↗</span>}</a>
+                {item.children && (
+                  <ul class="sub">
+                    {item.children.map((c) => <li><a href={url(c.href)}>{c.label}</a></li>)}
+                  </ul>
+                )}
+              </li>
+            ))}
+            <li><a class="btn btn-primary nav-cta" href={url('contact/')}>我想預約</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <img class="footer-logo" src={url('images/logo-white.png')} alt="米花動物醫院" width="180" height="67" loading="lazy" />
+          <p>專業・溫暖・無微不至<br />提供毛小孩最佳的醫療服務</p>
+          <div class="footer-social">
+            <a href={clinic.facebook} target="_blank" rel="noopener">Facebook</a>
+            <a href={clinic.instagram} target="_blank" rel="noopener">Instagram</a>
+            <a href={clinic.blog} target="_blank" rel="noopener">米花犬喵物語</a>
+          </div>
+        </div>
+        <div>
+          <h2>預約看診</h2>
+          <p>本院為完全預約制</p>
+          <p><a class="footer-phone" href={`tel:${clinic.tel}`}>☎ {clinic.phone}</a></p>
+          <p><a href={clinic.bookingForm} target="_blank" rel="noopener">填寫預約需求表單 ↗</a></p>
+        </div>
+        <div>
+          <h2>門診時段</h2>
+          <ul class="footer-hours">
+            {clinic.hours.map((h) => <li>{h}</li>)}
+          </ul>
+          <p class="muted">各時段看診醫師請見<a href={url('contact/#schedule')}>當月班表</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">米花動物醫院 © {new Date().getFullYear()} All Rights Reserved.</div>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector('.nav-toggle');
+      const navEl = document.getElementById('site-nav');
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        toggle.setAttribute('aria-label', open ? '開啟選單' : '關閉選單');
+        navEl?.classList.toggle('open', !open);
+        document.body.classList.toggle('nav-open', !open);
+      });
+    </script>
+  </body>
+</html>

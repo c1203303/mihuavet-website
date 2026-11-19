@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import Announcement from '../components/Announcement.astro';
+import Schedule from '../components/Schedule.astro';
+import BookingCta from '../components/BookingCta.astro';
+import { clinic, services } from '../data/site.js';
+import { url } from '../lib/url.js';
+
+const slides = [
+  { image: 'images/hero-team.webp', alt: '米花動物醫院醫療團隊', position: '50% 35%', title: '專業・溫暖・無微不至', text: '提供毛小孩最佳的醫療服務', href: 'about-mihua/', cta: '認識米花' },
+  { image: 'images/cats.webp', alt: '兩隻貓咪', position: '50% 40%', title: '乾淨・明亮・貓咪友善', text: '優化的醫療環境，減輕您與毛孩的壓力', href: 'about-mihua/environment/', cta: '參觀環境' },
+  { image: 'images/cat-white.webp', alt: '白色貓咪', position: '50% 50%', title: '專業內外科團隊', text: '臺大專業團隊，提供教學醫院等級的高品質醫療', href: 'about-mihua/our-team/', cta: '米花團隊' },
+];
+---
+<Base>
+  <Announcement />
+  <section class="hero-slider" aria-roledescription="carousel" aria-label="米花動物醫院">
+    {slides.map((sl, i) => (
+      <div class={`slide ${i === 0 ? 'active' : ''}`} role="group" aria-roledescription="slide" aria-label={`${i + 1} / ${slides.length}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+        <img class="slide-bg" src={url(sl.image)} alt={sl.alt} style={`object-position:${sl.position}`} fetchpriority={i === 0 ? 'high' : 'auto'} loading={i === 0 ? 'eager' : 'lazy'} />
+        <div class="container slide-content">
+          <h2 class="slide-title">{sl.title}</h2>
+          <p class="slide-text">{sl.text}</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href={url('contact/')}>立即預約</a>
+            <a class="btn btn-outline-light" href={url(sl.href)}>{sl.cta}</a>
+          </div>
+        </div>
+      </div>
+    ))}
+    <button class="slider-arrow prev" type="button" aria-label="上一張">‹</button>
+    <button class="slider-arrow next" type="button" aria-label="下一張">›</button>
+    <div class="slider-dots">
+      {slides.map((_, i) => <button type="button" aria-label={`第 ${i + 1} 張`} aria-current={i === 0 ? 'true' : 'false'}></button>)}
+    </div>
+  </section>
+  <h1 class="sr-only">米花動物醫院｜竹北犬貓專業醫療</h1>
+
+  <section class="section">
+    <div class="container">
+      <div class="cards-3">
+        <a class="card" href={url('about-mihua/')}>
+          <div class="card-img"><img src={url('images/cats.webp')} alt="兩隻貓咪" loading="lazy" width="1000" height="779" /></div>
+          <div class="card-body">
+            <h3>關於米花</h3>
+            <p>毛孩腳掌上的爆米花香，只有最信任的夥伴才聞得到。</p>
+            <span class="card-link">認識米花 →</span>
+          </div>
+        </a>
+        <a class="card" href={url('about-mihua/environment/')}>
+          <div class="card-img"><img src={url('images/environment/1.webp')} alt="米花接待空間" loading="lazy" width="1200" height="899" /></div>
+          <div class="card-body">
+            <h3>乾淨・明亮・貓咪友善</h3>
+            <p>優化的醫療環境，減輕您與毛孩的壓力。</p>
+            <span class="card-link">參觀環境 →</span>
+          </div>
+        </a>
+        <a class="card" href={url('about-mihua/our-team/')}>
+          <div class="card-img"><img src={url('images/team/hsiehmingjuei.webp')} alt="米花獸醫師" loading="lazy" width="720" height="1280" style="object-position: 50% 20%" /></div>
+          <div class="card-body">
+            <h3>專業內外科團隊</h3>
+            <p>臺大專業團隊，提供教學醫院等級的高品質醫療。</p>
+            <span class="card-link">米花團隊 →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="schedule">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">SCHEDULE</span>
+        <h2>本月班表</h2>
+        <p>本院為完全預約制，請參考班表後來電 {clinic.phone} 預約。</p>
+      </div>
+      <Schedule />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">SERVICES</span>
+        <h2>從小到老，我們都不缺席</h2>
+        <p>我們提供狗狗和貓咪全方位的醫療服務，從幼年的預防注射及飼養諮詢，青年的常規絕育手術以及年度健康檢查，到老年的各種內外科疑難雜症。</p>
+      </div>
+      <div class="service-grid">
+        {services.map((s) => (
+          <div class="service">
+            <h3>{s.title}</h3>
+            <ul>{s.items.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <p style="text-align:center;margin-top:36px">
+        <a class="btn btn-navy" href={url('about-mihua/our-services/')}>完整診療項目</a>
+        <a class="btn btn-outline" style="margin-left:8px" href={url('health-checkup/')}>健檢套組</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">ABOUT</span>
+        <h2>信任，是最深刻的連結</h2>
+        <p>唯有讓毛孩們信任我們，我們才有機會了解牠們的疾病。唯有讓毛家長信任我們，我們才有機會治療牠們的疾病。</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>專業犬貓分科醫療</h3>
+          <p>米花的獸醫師們受過臺大教學醫院的嚴謹訓練，在各自的專業領域中皆有豐富的經驗，也積極汲取新知，極力提升毛小孩的醫療水準。</p>
+          <p class="quote">在造物主面前，我們謙卑，但昂首闊步。</p>
+        </div>
+        <div class="feature">
+          <h3>以「毛」為尊的醫院設計</h3>
+          <p>獨立的貓候診區以及貓診間，阻隔讓貓咪緊張的氣味與聲響；住院區無柵狀底盤；全預約的環境讓我們能從容不迫地完成每一項該作的事。</p>
+        </div>
+        <div class="feature">
+          <h3>推倒知識的高牆</h3>
+          <p>我們創立了<a href={clinic.blog} target="_blank" rel="noopener">米花犬喵物語</a>，不定期新增疾病介紹和照顧方式的衛教文章，讓毛家長清楚理解毛小孩發生了什麼事。</p>
+          <p class="quote">獸醫師的社會責任，我們責無旁貸。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookingCta />
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.hero-slider');
+  if (root) {
+    const slides = [...root.querySelectorAll<HTMLElement>('.slide')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('.slider-dots button')];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer: number | undefined;
+    const show = (i: number) => {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, j) => { s.classList.toggle('active', j === index); s.setAttribute('aria-hidden', String(j !== index)); });
+      dots.forEach((d, j) => d.setAttribute('aria-current', String(j === index)));
+    };
+    const stop = () => window.clearInterval(timer);
+    const start = () => { stop(); if (!reduce) timer = window.setInterval(() => show(index + 1), 6000); };
+    root.querySelector('.prev')?.addEventListener('click', () => show(index - 1));
+    root.querySelector('.next')?.addEventListener('click', () => show(index + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', () => { if (!root.contains(document.activeElement)) start(); });
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget as Node)) start(); });
+    let x0: number | null = null;
+    root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) { show(index + (dx < 0 ? 1 : -1)); start(); }
+      x0 = null;
+    });
+    start();
+  }
+</script>

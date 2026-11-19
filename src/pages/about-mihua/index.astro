@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import { clinic } from '../../data/site.js';
+import { url } from '../../lib/url.js';
+---
+<Base title="關於米花" description="米花動物醫院的緣起與特色：專業犬貓分科醫療、以「毛」為尊的醫院設計、推倒知識的高牆。">
+  <PageHero title="關於米花" subtitle="你知道毛孩們的腳掌上有爆米花的味道嗎？" crumbs={[{ label: '關於米花' }]} image="images/cat-white.webp" />
+  <section class="section">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">OUR STORY</span>
+        <h2>米花緣起</h2>
+        <p>你知道毛孩們的腳掌上有爆米花的味道嗎？有幸能聞到這個味道的人，只有牠們最「信任」的夥伴，也就是你們。</p>
+        <p>米花動物醫院的獸醫師們均受過嚴格的專業訓練，因彼此信任而聚首，而我們深信毛孩們對人類的信任是這世界上最純淨的美好，而守護這美好是我們的天命。</p>
+        <p>唯有讓毛孩們信任我們，我們才有機會了解牠們的疾病；唯有讓毛家長信任我們，我們才有機會治療牠們的疾病。我們相信，當牠們、你們和我們的三角關係是透過「信任」來維繫時，將最為深刻且穩固。</p>
+        <p><strong>讓我們輕輕地牽起牠們的手，用力吸一口這份幸福，毛小孩的健康，也請放心交給我們。</strong></p>
+      </div>
+      <div class="split-img"><img src={url('images/cats.webp')} alt="兩隻貓咪" width="1000" height="779" loading="lazy" /></div>
+    </div>
+  </section>
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">FEATURES</span><h2>米花特色</h2></div>
+      <div class="features">
+        <div class="feature">
+          <h3>專業犬貓分科醫療</h3>
+          <p>隨著寵物的社會地位不斷提高，寵物醫學的發展亦一日千里。米花的獸醫師們受過臺大教學醫院的嚴謹訓練，面對日新月異的醫療知識，不敢號稱樣樣精通，但在各自的專業領域中皆有豐富的經驗，也積極汲取新知，極力提升毛小孩的醫療水準。</p>
+          <p class="quote">在造物主面前，我們謙卑，但昂首闊步。</p>
+        </div>
+        <div class="feature">
+          <h3>以「毛」為尊的醫院設計</h3>
+          <p>毛小孩是我們的心頭肉，我們費盡心思，只求他們在生病不舒服的時候能盡可能開心一些。我們設有<span class="highlight">獨立的貓候診區以及貓診間</span>，阻隔讓貓咪緊張的氣味與聲響；住院區<span class="highlight">無柵狀底盤</span>，讓住院也能住得舒適；<span class="highlight">全預約的環境</span>讓我們能從容不迫地完成每一項該作的事，讓我們在決策之前都有充足的時間思考及討論。</p>
+        </div>
+        <div class="feature">
+          <h3>推倒知識的高牆</h3>
+          <p>寵物不是機器，沒辦法換個零件就恢復健康。米花相信，讓毛家長了解自家毛孩的疾病以及正確的觀念，是寵物醫療中最重要的一環。為了推廣正確的疾病知識，我們創立了<a href={clinic.blog} target="_blank" rel="noopener">米花犬喵物語</a>—不定期新增關於疾病介紹和照顧方式的衛教文章，在門診時也口沫橫飛地以淺白易懂的方式，讓慌張的家長們能夠清楚理解毛小孩發生了什麼事以及該怎麼幫助他們。</p>
+          <p class="quote">獸醫師的社會責任，我們責無旁貸。</p>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:40px">
+        <a class="btn btn-navy" href={url('about-mihua/environment/')}>米花環境</a>
+        <a class="btn btn-outline" style="margin-left:8px" href={url('about-mihua/equipment/')}>米花設備</a>
+      </p>
+    </div>
+  </section>
+  <BookingCta />
+</Base>

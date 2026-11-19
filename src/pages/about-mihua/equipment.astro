@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import { equipment } from '../../data/site.js';
+import { url } from '../../lib/url.js';
+const categories = [...new Set(equipment.map((e) => e.category))];
+---
+<Base title="米花設備" description="米花動物醫院的血液、尿液、影像、麻醉、手術、齒科、眼科、內科與住院照護設備。">
+  <PageHero title="米花設備" subtitle="不追求樣樣具備，但絕對注重品質及效果" crumbs={[{ label: '關於米花', href: 'about-mihua/' }, { label: '米花設備' }]} />
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p>毛小孩們的疾病能夠被精準診斷及治療，除了仰賴獸醫師的學識及經驗外，優良的檢查儀器更是不可或缺。我們並不追求樣樣具備，但絕對注重品質及效果。</p>
+      </div>
+      <div class="equip-cats">{categories.map((c) => <span>{c}</span>)}</div>
+      <div class="equip-grid">
+        {equipment.map((e) => (
+          <figure class="equip">
+            <img src={url(e.photo)} alt={`${e.category}：${e.name}`} width="540" height="960" loading="lazy" />
+            <figcaption>{e.category}：{e.name}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+  <BookingCta />
+</Base>

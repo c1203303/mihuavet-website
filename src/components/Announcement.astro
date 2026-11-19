@@ -1,0 +1,24 @@
+---
+---
+<div class="announcement" data-announcement hidden>
+  <div class="container announcement-inner">
+    <span class="announcement-tag">最新公告</span>
+    <p class="announcement-text"></p>
+  </div>
+</div>
+
+<script>
+  import { getPublicDoc } from '../lib/firestore.js';
+
+  document.querySelectorAll<HTMLElement>('[data-announcement]').forEach(async (el) => {
+    try {
+      const doc = await getPublicDoc('website/announcement');
+      const text = String(doc?.text || '').trim();
+      if (!doc?.enabled || !text) return;
+      (el.querySelector('.announcement-text') as HTMLElement).textContent = text;
+      el.hidden = false;
+    } catch {
+      /* 讀不到公告就不顯示 */
+    }
+  });
+</script>

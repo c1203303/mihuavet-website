@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import BookingCta from '../../components/BookingCta.astro';
+import { environment } from '../../data/site.js';
+import { url } from '../../lib/url.js';
+---
+<Base title="米花環境" description="米花動物醫院的接待空間、診療空間、犬貓分開的住院區、中央處理區與手術室。">
+  <PageHero title="米花環境" subtitle="乾淨・明亮・貓咪友善" crumbs={[{ label: '關於米花', href: 'about-mihua/' }, { label: '米花環境' }]} image="images/environment/1.webp" />
+  <section class="section">
+    <div class="container env-list">
+      {environment.map((e, i) => (
+        <div class="env-item">
+          <div class="env-photo"><img src={url(e.photo)} alt={`米花${e.title}`} loading={i < 2 ? 'eager' : 'lazy'} /></div>
+          <div>
+            <div class="env-num">{String(i + 1).padStart(2, '0')}</div>
+            <h2>{e.title}</h2>
+            <p>{e.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+  <BookingCta />
+</Base>

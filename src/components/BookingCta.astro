@@ -1,0 +1,16 @@
+---
+import { clinic } from '../data/site.js';
+import { url } from '../lib/url.js';
+---
+<section class="cta-band">
+  <div class="container cta-inner">
+    <div>
+      <h2>把毛孩的健康，放心交給我們</h2>
+      <p>米花為完全預約制，請於營業時間來電或填寫預約需求表單。</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-light" href={`tel:${clinic.tel}`}>☎ {clinic.phone}</a>
+      <a class="btn btn-outline-light" href={url('contact/')}>預約方式與須知</a>
+    </div>
+  </div>
+</section>
